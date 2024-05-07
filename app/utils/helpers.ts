@@ -26,5 +26,5 @@ export const getDigits = (number: number | string) => {
   return digitsArray.map((digit) => Number(digit));
 };
 
-  return date.getTime() > Date.now();
-}
+//   return date.getTime() > Date.now();
+// }
