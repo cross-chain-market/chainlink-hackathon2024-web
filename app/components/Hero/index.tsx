@@ -1,3 +1,5 @@
+import { Button } from "@mantine/core";
+
 export default function Hero() {
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -14,19 +16,10 @@ export default function Hero() {
                 eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
                 enim ad minim veniam, quis nostrud exercitation ullamco laboris.
               </p>
-              <div className="mt-8 flex justify-center lg:justify-start">
-                <a
-                  href="#!"
-                  className="inline-block bg-[#b9ccff] rounded-lg py-3 px-6 text-sm md:text-base font-medium text-gray-800 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#b9ccff] transition duration-300"
-                >
-                  Get Started
-                </a>
-                <a
-                  href="#!"
-                  className="ml-4 inline-block bg-black rounded-lg py-3 px-6 text-sm md:text-base font-medium text-white hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 transition duration-300"
-                >
-                  Learn More
-                </a>
+              <div className="mt-8 flex gap-3 justify-center lg:justify-start">
+                <Button variant="filled">Go to marketplace</Button>
+
+                <Button variant="light">Create your first collection</Button>
               </div>
             </div>
             <div className="mt-8 lg:mt-0 lg:w-5/12">
