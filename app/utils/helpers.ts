@@ -12,7 +12,7 @@ export const formatDate = (date: Date) => {
     second: "2-digit",
     hour12: false, // Use 24-hour format
   };
-  const formatter = new Intl.DateTimeFormat('en-US', options);
+  const formatter = new Intl.DateTimeFormat("en-US", options);
   return formatter.format(date);
 };
 
@@ -26,5 +26,8 @@ export const getDigits = (number: number | string) => {
   return digitsArray.map((digit) => Number(digit));
 };
 
-//   return date.getTime() > Date.now();
-// }
+export const priceFormatter = new Intl.NumberFormat("en-US", {
+  style: "currency",
+  currency: "USD",
+  minimumFractionDigits: 0,
+});
