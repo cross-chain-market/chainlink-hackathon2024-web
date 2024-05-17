@@ -8,14 +8,21 @@ import WalletConnectButton from "../WalletConnectButton";
 
 export default function Header() {
   const [opened, { toggle }] = useDisclosure(false);
-  
+
   return (
     <header className={classes.header}>
       <Container fluid className={classes.inner}>
-        <Title fz="lg" className={"text-white"}>
-          Cross-Chain Marketplace (Real World Assets)
+        <div className="flex gap-2 items-center">
+        <img
+          src="https://cdn-icons-png.freepik.com/512/2152/2152349.png"
+          style={{ width: 50, height: 50 }}
+          className={"logo"}
+        />{" "}
+        <Title fz="lg" className={"text-dark"}>
+          Cross-Chain Marketplace
         </Title>
-
+        </div>
+       
         <Group gap={5} visibleFrom="xs">
           <WalletConnectButton />
         </Group>
