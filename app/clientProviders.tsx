@@ -1,6 +1,9 @@
 "use client";
 import { createContext, useEffect, useState } from "react";
-import ContractInterface from "./lib/client-services/contractA";
+import MarketplaceInterface from "./lib/client-services/marketplaceContract";
+import CollectionFactoryInterface from "./lib/client-services/collectionFactoryContract";
+import PriceFeedInterface from "./lib/client-services/priceFeedContract";
+import BaseInterface from "./lib/client-services/BaseInterface";
 import {
   getCurrentWalletConnected,
   connectWallet,
@@ -13,25 +16,43 @@ export function DeployedContractProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [contractInterface, setInterface] = useState<any>();
-  const [initialized, setInitialized] = useState<boolean>();
+  const [marketplaceInterface, setMarketplaceInterface] = useState<any>();
+  const [collectionFactoryInterface, setCollectionFactoryInterface] = useState<any>();
+  const [priceFeedInterface, setPriceFeedInterface] = useState<any>();
+  const [baseInterface, setBaseInterface] = useState<any>();
+  const [initialized, setInitialized] = useState<boolean>(false);
   const [connectedAccount, setAccount] = useState<string | null>();
 
   const connect = async () => {
     if (!connectedAccount) {
       const account = await connectWallet();
-      if (account) {
+      if (account && !baseInterface) {
         setAccount(account.address);
-        initializeContract();
+        initializeContracts();
       }
     }
   };
 
-  const initializeContract = async () => {
-    const contractInterface = new ContractInterface();
-    await contractInterface.init();
+  const initializeContracts = async () => {
+    const baseInterface = new BaseInterface();
+    setBaseInterface(baseInterface);
+    await baseInterface.init();
+    const chainId = baseInterface.getChainId();
+    const signer = baseInterface.getSigner();
+
+    const marketPlaceContract = new MarketplaceInterface();
+    await marketPlaceContract.init(chainId, signer);
+    setMarketplaceInterface(marketPlaceContract);
+
+    const priceFeedInterface = new PriceFeedInterface();
+    await priceFeedInterface.init(chainId, signer);
+    setPriceFeedInterface(priceFeedInterface);
+
+    const collectionFactoryInterface = new CollectionFactoryInterface();
+    await collectionFactoryInterface.init(chainId, signer);
+    setCollectionFactoryInterface(collectionFactoryInterface);
+
     setInitialized(true);
-    setInterface(contractInterface);
     (window as any).ethereum.on(
       "accountsChanged",
       async (accounts: Array<string>) => {
@@ -39,8 +60,8 @@ export function DeployedContractProvider({
           setAccount(null);
           setInitialized(false);
         } else {
-            await contractInterface.init();
-            setAccount(contractInterface.getSignerAddress());
+            await marketPlaceContract.init(chainId, signer);
+            setAccount(baseInterface.getSigner());
         }
       }
     );
@@ -49,9 +70,9 @@ export function DeployedContractProvider({
   useEffect(() => {
     const getConnected = async () => {
       const connectedAccount = await getCurrentWalletConnected();
-      if (connectedAccount?.address) {
+      if (connectedAccount?.address && !initialized) {
         setAccount(connectedAccount.address);
-        initializeContract();
+        initializeContracts();
       }
     };
     getConnected();
@@ -59,7 +80,7 @@ export function DeployedContractProvider({
 
   return (
     <ContractContext.Provider
-      value={{ contractInterface, initialized, connectedAccount, connect }}
+      value={{ marketplaceInterface, collectionFactoryInterface, priceFeedInterface, initialized, connectedAccount, connect }}
     >
       {children}
     </ContractContext.Provider>

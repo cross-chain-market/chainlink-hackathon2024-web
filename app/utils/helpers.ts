@@ -1,3 +1,10 @@
+type ChainInfo = {
+  network: string;
+  chain: string;
+  token: string;
+  type: string;
+};
+
 export const shortAddress = (address: string) => {
   return address.slice(0, 7) + "....." + address.slice(-5);
 };
@@ -31,3 +38,17 @@ export const priceFormatter = new Intl.NumberFormat("en-US", {
   currency: "USD",
   minimumFractionDigits: 0,
 });
+
+export const chainInfo = (chainId: number) => {
+  const nameHash: Record<number, ChainInfo> = {
+    43113: { network: 'avalanche', chain: 'avalanche_fuji', token: 'AVAX', type: 'test'},
+    43114: { network: 'avalanche', chain: 'avalanche', token: 'AVAX', type: 'main'},
+    80002: { network: 'polygon', chain: 'amoy', token: 'MATIC', type: 'test'},
+    137: { network: 'polygon', chain: 'amoy', token: 'MATIC', type: 'main'},
+    1101: { network: 'polygon', chain: 'polygon-zkevm', token: 'ETH', type: 'main'},
+    1442: { network: 'polygon', chain: 'polygon-zkevm-testnet', token: 'ETH', type: 'test'},
+    1: { network: 'ethereum', chain: 'ethereum', token: 'ETH', type: 'main'}
+  };
+
+  return nameHash[chainId];
+}
