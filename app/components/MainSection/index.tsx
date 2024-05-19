@@ -26,11 +26,7 @@ export default function MainSection() {
   return (
     <>
       <Hero />
-      <Container fluid className="flex flex-row">
-
-
-        
-      </Container>
+      <Container fluid className="flex flex-row"></Container>
     </>
   );
 }

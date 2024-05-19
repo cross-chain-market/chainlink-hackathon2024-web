@@ -5,7 +5,7 @@ import Footer from "../components/Footer";
 import { DeployedContractProvider } from "../clientProviders";
 import ListingCard from "../components/ListingCard";
 
-export default function Home() {
+export default function Page() {
   return (
     <DeployedContractProvider>
       <main className="flex min-h-screen flex-col">
