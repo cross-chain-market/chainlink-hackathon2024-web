@@ -19,6 +19,12 @@
           "internalType": "address",
           "name": "owner",
           "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "collectionName",
+          "type": "string"
         }
       ],
       "name": "CollectionDeployedLog",

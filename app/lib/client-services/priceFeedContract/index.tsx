@@ -1,42 +1,49 @@
 "use client";
-import { ContractRunner, ethers } from "ethers";
-import { chainInfo } from '../../../utils/helpers';
-
+import { getChainId } from "@wagmi/core";
+import { Address } from "viem";
+import { chainInfo } from "../../../utils/helpers";
 require("dotenv").config();
-const contractJSON = require("./abi.json"); 
 interface ContractAddresses {
   [key: string]: string;
 }
 
-export default class priceFeedInterface {
-  private contract: any;
-  private cAddress: string | null = null;
+import { readContract } from "@wagmi/core";
+import { config } from "../../../../config";
+const contractJSON = require("./abi.json");
 
-  private contractAddress: ContractAddresses = {
-    'Localhost_avalanche_fuji': process.env.priceFeed_avalanche_fuji_contract_address || '',
-    'Development_avalanche_fuji': process.env.priceFeed_avalanche_fuji_contract_address || '',
-    'Preview_avalanche_fuji': process.env.priceFeed_avalanche_fuji_contract_address || '',
-    'Production': ''
+export async function getAVAXUSD() {
+  const chainId = getChainId(config);
+  const chainData = chainInfo(chainId);
+
+  const contractAddress: ContractAddresses = {
+    Localhost_avalanche_fuji:
+      process.env.priceFeed_avalanche_fuji_contract_address || "",
+    Development_avalanche_fuji:
+      process.env.priceFeed_avalanche_fuji_contract_address || "",
+    Preview_avalanche_fuji:
+      process.env.priceFeed_avalanche_fuji_contract_address || "",
+    Production: "",
   };
 
-  constructor() {
-  }
+  try {
+    const address = contractAddress[
+      `${process.env.WORKING_ENV}_${chainData.chain}` || "test" ] as Address;
 
-  public async init(chainId: number | null, signer: ContractRunner) {
-    if (chainId) {
-      const chainData = chainInfo(chainId);
-      this.cAddress = this.contractAddress[`${process.env.WORKING_ENV}_${chainData.chain}` || 'test'];
-      this.contract = new ethers.Contract(this.cAddress, contractJSON.abi, signer);
-    }
-  }
+    const decimals: number = Number(await readContract(config, {
+      abi: contractJSON.abi,
+      address,
+      functionName: "getDecimals",
+      args: []
+    }));
 
-  public async getAVAXUSD() {
-    try {
-      const decimals = await this.contract.getDecimals();
-      const res = await this.contract.getAVAXUSD() / (10 ** decimals);
-      return res;
-    } catch(err: any) {
-      err.reason && alert(err.reason);
-    }
+    const res: number = Number(await readContract(config, {
+      abi: contractJSON.abi,
+      address,
+      functionName: "getAVAXUSD",
+      args: []
+    }));
+    return res / 10 ** decimals;
+  } catch (err) {
+    console.log(err);
   }
 }

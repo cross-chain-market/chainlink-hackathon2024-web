@@ -47,7 +47,8 @@ export const chainInfo = (chainId: number) => {
     137: { network: 'polygon', chain: 'amoy', token: 'MATIC', type: 'main'},
     1101: { network: 'polygon', chain: 'polygon-zkevm', token: 'ETH', type: 'main'},
     1442: { network: 'polygon', chain: 'polygon-zkevm-testnet', token: 'ETH', type: 'test'},
-    1: { network: 'ethereum', chain: 'ethereum', token: 'ETH', type: 'main'}
+    1: { network: 'ethereum', chain: 'ethereum', token: 'ETH', type: 'main'},
+    11155111: { network: 'ethereum', chain: 'sepolia', token: 'ETH', type: 'main' }
   };
 
   return nameHash[chainId];

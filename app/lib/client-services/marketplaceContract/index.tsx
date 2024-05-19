@@ -1,36 +1,54 @@
 "use client";
-import { ContractRunner, ethers } from "ethers";
-import { chainInfo } from '../../../utils/helpers';
+import { getChainId } from "@wagmi/core";
+import { Address, parseUnits, parseEther } from "viem";
+import { chainInfo } from "../../../utils/helpers";
+import { getAVAXUSD } from "../priceFeedContract";
 
 require("dotenv").config();
-const contractJSON = require("./abi.json"); 
 interface ContractAddresses {
   [key: string]: string;
 }
 
-const contractAddress: ContractAddresses = {
-  'Localhost_avalanche_fuji': process.env.marketplace_avalanche_fuji_contract_address || '',
-  'Development_avalanche_fuji': process.env.marketplace_avalanche_fuji_contract_address || '',
-  'Preview_avalanche_fuji': process.env.marketplace_avalanche_fuji_contract_address || '',
-  'Production': ''
-};
+import { writeContract } from '@wagmi/core'
+import { config } from '../../../../config'
+const contractJSON = require("./abi.json");
 
-export default class MarketplaceInterface {
-  private contract: any;
-  private cAddress: string | null = null;
+export async function buyListing(collectionAddress: string, listingId: number, amount: number, priceUSD: number) {
+  const chainId = getChainId(config);
+    const chainData = chainInfo(chainId);
 
-  constructor() {
-  }
-
-  public async init(chainId: number | null, signer: ContractRunner) {
-    if (chainId) {
-      const chainData = chainInfo(chainId);
-      this.cAddress = contractAddress[`${process.env.WORKING_ENV}_${chainData.chain}` || 'test'];
-      this.contract = new ethers.Contract(this.cAddress, contractJSON.abi, signer);
+  const contractAddress: ContractAddresses = {
+    Localhost_avalanche_fuji:
+      process.env.marketplace_avalanche_fuji_contract_address || "",
+    Development_avalanche_fuji:
+      process.env.marketplace_avalanche_fuji_contract_address || "",
+    Preview_avalanche_fuji:
+      process.env.marketplace_avalanche_fuji_contract_address || "",
+    Production: "",
+  };
+  try {
+    const priceConversion = await getAVAXUSD();
+    if (!priceConversion) {
+      alert('issue with getting price, please contact support');
+      return;
     }
-  }
-
-  public buyListing(collectionAddress: string, listingId: number, amount: number) {
-    this.contract.buyListing(collectionAddress, listingId, amount);
+    const address = contractAddress[
+      `${process.env.WORKING_ENV}_${chainData.chain}` || "test"
+    ] as Address;
+    const value = parseUnits(String(priceUSD / priceConversion), 18);
+    await writeContract(config, {
+      abi: contractJSON.abi,
+      address,
+      functionName: 'buyListing',
+      args: [
+        collectionAddress,
+        listingId,
+        amount
+      ],
+      value
+    });
+  } catch (err) {
+    console.log(err);
+    alert('buy transaction can not be completed, please contact support');
   }
 }
