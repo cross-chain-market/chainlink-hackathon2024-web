@@ -4,7 +4,7 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import ListingCard from "../components/ListingCard";
 
-export default function Home() {
+export default function Page() {
   return (
       <main className="flex min-h-screen flex-col">
         <Header />

@@ -11,8 +11,7 @@ export default function MainSection() {
     <>
       <CollectionFactoryEventWatcher />
       <Hero />
-      <Container fluid className="flex flex-row">
-      </Container>
+      <Container fluid className="flex flex-row"></Container>
     </>
   );
 }
