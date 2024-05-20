@@ -1,6 +1,5 @@
 "use client";
 
-import { DeployedContractProvider } from "@/app/clientProviders";
 import Header from "@/app/components/Header";
 import { Navbar } from "@/app/components/Navbar";
 import { AppShell } from "@mantine/core";
@@ -9,7 +8,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const [navbarOpened, { toggle: toggleNavbar }] = useDisclosure();
 
   return (
-    <DeployedContractProvider>
       <AppShell
         header={{ height: 60 }}
         navbar={{
@@ -31,6 +29,5 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           {children}
         </AppShell.Main>
       </AppShell>
-    </DeployedContractProvider>
   );
 }

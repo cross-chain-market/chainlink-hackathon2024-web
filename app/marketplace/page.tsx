@@ -3,7 +3,7 @@ import { Container } from "@mantine/core";
 
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import { DeployedContractProvider } from "../clientProviders";
+// import { DeployedContractProvider } from "../clientProviders";
 import classes from "./Marketplace.module.css";
 import { useState } from "react";
 
@@ -57,7 +57,7 @@ export default function Home() {
     },
   ];
   return (
-    <DeployedContractProvider>
+    // <DeployedContractProvider>
       <main
         className="flex flex-col"
         style={{ minHeight: "150vh", position: "relative" }}
@@ -319,6 +319,6 @@ export default function Home() {
           </>
         )}
       </main>
-    </DeployedContractProvider>
+    // </DeployedContractProvider>
   );
 }
