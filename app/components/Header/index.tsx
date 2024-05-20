@@ -1,13 +1,31 @@
 "use client";
 
-import { Container, Group, Burger, Title } from "@mantine/core";
+import { Container, Group, Burger, Title, Button } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+import { deployCollection } from '../../lib/client-services/collectionFactoryContract';
+import { buyListing } from '../../lib/client-services/marketplaceContract';
+import { getAVAXUSD } from '../../lib/client-services/priceFeedContract';
 import classes from "./Header.module.css";
 
-import WalletConnectButton from "../WalletConnectButton";
+import ConnectButton from "../WalletConnect";
 
 export default function Header() {
   const [opened, { toggle }] = useDisclosure(false);
+
+  const deployCollectionClick = async () => {
+    await deployCollection('test-collection-5', [1,2,3], [500,600,700], "QmekBgziAf5nChDnjvyMvtVLAyKU8t7qinLY8iumw1XLMG");
+  }
+
+  const auxToUsdBtn = async () => {
+    const res = await getAVAXUSD();
+    if (res) {
+      alert(`300$ -> ${(300 / res).toFixed(2)} AVAX`);
+    }
+  }
+
+  const buyListingBtn = async () => {
+    await buyListing('0xb5DAE2D7E1889fd3D6C4314fE2B6775492f1992a',2, 10, 5);
+  }
 
   return (
     <header className={classes.header}>
@@ -21,10 +39,14 @@ export default function Header() {
         <Title fz="lg" className={"text-dark"}>
           Cross-Chain Marketplace
         </Title>
+        {/* <DeployCollectionButton/> */}
+        <Button onClick={deployCollectionClick}>add collection</Button>
+        <Button onClick={auxToUsdBtn}>get AUX to usd</Button>
+        <Button onClick={buyListingBtn}>buy listing</Button>
         </div>
        
         <Group gap={5} visibleFrom="xs">
-          <WalletConnectButton />
+          <ConnectButton />
         </Group>
         <Burger opened={opened} onClick={toggle} hiddenFrom="xs" size="sm" />
       </Container>

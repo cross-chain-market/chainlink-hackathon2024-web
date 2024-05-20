@@ -2,15 +2,12 @@ import { Alert, Button, Container } from "@mantine/core";
 
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import { DeployedContractProvider } from "../clientProviders";
 import ListingCard from "../components/ListingCard";
 
 export default function Page() {
   return (
-    <DeployedContractProvider>
       <main className="flex min-h-screen flex-col">
         <Header />
-
         <Container className="flex flex-col gap-2">
           <Alert variant="light" color="yellow" radius="xs">
             Hey, we are so glad to have you on our site. In order to buy, please
@@ -40,6 +37,5 @@ export default function Page() {
         </Container>
         <Footer />
       </main>
-    </DeployedContractProvider>
   );
 }
