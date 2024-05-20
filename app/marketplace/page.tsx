@@ -1,12 +1,10 @@
 "use client";
-import { Alert, Button, Container } from "@mantine/core";
+import { Container } from "@mantine/core";
 
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { DeployedContractProvider } from "../clientProviders";
-import ListingCard from "../components/ListingCard";
 import classes from "./Marketplace.module.css";
-import woman1 from "../assets/woman-h-1.svg";
 import { useState } from "react";
 
 export default function Home() {
@@ -320,7 +318,6 @@ export default function Home() {
             </div>
           </>
         )}
-
       </main>
     </DeployedContractProvider>
   );
