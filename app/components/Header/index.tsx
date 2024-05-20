@@ -13,8 +13,22 @@ export default function Header() {
   const [opened, { toggle }] = useDisclosure(false);
 
   const deployCollectionClick = async () => {
+<<<<<<< Updated upstream
     await deployCollection('test-collection-5', [1,2,3], [500,600,700], "QmekBgziAf5nChDnjvyMvtVLAyKU8t7qinLY8iumw1XLMG");
   }
+=======
+    await deployCollection(
+      "test-collection-5",
+      [1, 2, 3],
+      [500, 600, 700],
+      "QmekBgziAf5nChDnjvyMvtVLAyKU8t7qinLY8iumw1XLMG"
+    );
+  };
+
+  const allowMarketplaceToSellCollectionClick = async () => {
+    await allowMarketplaceToSellCollection('0x417a5298c5Cc9A6935aC1bF37633d3DBB8a4C95c', '0x33D0555cCeaA36fcCDb3Ddc33243538A6FB8C02F', true);
+  };
+>>>>>>> Stashed changes
 
   const auxToUsdBtn = async () => {
     const res = await getAVAXUSD();
@@ -24,8 +38,13 @@ export default function Header() {
   }
 
   const buyListingBtn = async () => {
+<<<<<<< Updated upstream
     await buyListing('0xb5DAE2D7E1889fd3D6C4314fE2B6775492f1992a',2, 10, 5);
   }
+=======
+    await buyListing("0x417a5298c5Cc9A6935aC1bF37633d3DBB8a4C95c", 2, 10, 5);
+  };
+>>>>>>> Stashed changes
 
   return (
     <header className={classes.header}>
