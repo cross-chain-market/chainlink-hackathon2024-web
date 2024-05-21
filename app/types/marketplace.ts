@@ -22,3 +22,21 @@ export interface Item {
   listed_amount: number;
   attributes: { key: string; value: string }[];
 }
+
+export interface Product {
+  id: number;
+  collection_id: number;
+  name: string;
+  description: string;
+  image_id: string;
+  fiat_price: number;
+  total_amount: number;
+  listed_amount: number;
+  attributes: Attributes;
+  created_at: string;
+}
+
+export interface Attributes {
+  attribute_1: string;
+  attribute_2: string;
+}
