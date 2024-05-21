@@ -1,34 +1,57 @@
 import { Button } from "@mantine/core";
+import { IconChevronCompactRight, IconChevronRight } from "@tabler/icons-react";
+import Image from "next/image";
 
 export default function Hero() {
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8">
       <div className="py-12 text-center lg:text-left">
         <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col lg:flex-row items-center">
+          <div className="flex flex-col lg:flex-row items-center lg:justify-between">
             <div className="lg:w-7/12 lg:pr-6">
-              <h1 className="text-4xl sm:text-5xl md:text-6xl xl:text-7xl font-bold tracking-tight text-black">
-                Cross-Chain Marketplace{" "}
-                <span className="text-[#b6e3ff]">For Assets</span>
+              <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-black">
+                Crypto products,{"\n"} Your Gateway to the <br />
+                <span className="text-white bg-[#5B4CF0]">
+                  Future of Shopping
+                </span>
               </h1>
-              <p className="mt-4 text-lg text-gray-800">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris.
-              </p>
-              <div className="mt-8 flex gap-3 justify-center lg:justify-start">
-                <Button variant="filled">Go to marketplace</Button>
 
-                <Button variant="light">Create your first collection</Button>
+              <p className="text-xl mt-4 font-medium text-[#606060] leading-8">
+                Welcome to our Web3 Marketplace, We enable selling real-world
+                products with a few clicks. Our platform enables users to
+                securely transact with cryptocurrencies while offering a diverse
+                range of products. From electronics to fashion, art, and more,
+                discover a seamless shopping experience that prioritizes
+                security, transparency, and convenience. Join us in shaping the
+                future of commerce.
+              </p>
+
+              <div className="mt-8 flex gap-3 justify-center lg:justify-start">
+                <Button
+                  variant="outline"
+                  size="lg"
+                  rightSection={<IconChevronRight />}
+                >
+                  Sell products
+                </Button>
+
+                <Button
+                  variant="filled"
+                  size="lg"
+                  rightSection={<IconChevronRight />}
+                >
+                  Go to marketplace
+                </Button>
               </div>
             </div>
-            <div className="mt-8 lg:mt-0 lg:w-5/12">
-              <img
-                src="https://aktarytech.com/wp-content/uploads/2022/03/cross-chain-security.jpg"
-                className="w-full rounded-lg shadow-lg"
-                alt="Cross-Chain Security"
-              />
-            </div>
+
+            <Image
+              src="/hero-banner.png"
+              className="object-cover"
+              alt="Cross-Chain Security"
+              width={742}
+              height={602}
+            />
           </div>
         </div>
       </div>
