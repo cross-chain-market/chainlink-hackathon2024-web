@@ -5,6 +5,8 @@ import { useDisclosure } from "@mantine/hooks";
 import { deployCollection } from '../../lib/client-services/collectionFactoryContract';
 import { buyListing } from '../../lib/client-services/marketplaceContract';
 import { getAVAXUSD } from '../../lib/client-services/priceFeedContract';
+import { allowMarketplaceToSellCollection } from "../../lib/client-services/collectionContract";
+
 import classes from "./Header.module.css";
 
 import ConnectButton from "../WalletConnect";
@@ -50,6 +52,7 @@ export default function Header() {
         </Title>
         {/* <DeployCollectionButton/> */}
         <Button onClick={deployCollectionClick}>add collection</Button>
+        <Button onClick={allowMarketplaceToSellCollectionClick}>approve marketplace to sell</Button>
         <Button onClick={auxToUsdBtn}>get AUX to usd</Button>
         <Button onClick={buyListingBtn}>buy listing</Button>
         </div>

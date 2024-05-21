@@ -1,6 +1,6 @@
 "use client";
 import { getChainId } from "@wagmi/core";
-import { Address, parseUnits, parseEther } from "viem";
+import { Address, parseUnits } from "viem";
 import { chainInfo } from "../../../utils/helpers";
 import { getAVAXUSD } from "../priceFeedContract";
 
