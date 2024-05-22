@@ -3,7 +3,7 @@ import Image from "next/image";
 const TEAM_MEMBERS = [
   {
     name: "Tal Waserman",
-    title: "Snr Full stack & Web3 developer",
+    title: "Full stack & Web3 developer",
     stack: "JavaScript, TypeScript, Go, React and Node",
     image: "/team-1.png",
   },
@@ -49,7 +49,7 @@ export function Team() {
               fill
             />
 
-            <p className="absolute left-4 bottom-4 text-xl text-white invisible group-hover:visible">
+            <p className="drop-shadow-[0_5px_5px_rgb(0,0,0)] absolute left-4 bottom-4 text-xl text-white invisible group-hover:visible">
               {member.stack}
             </p>
           </div>

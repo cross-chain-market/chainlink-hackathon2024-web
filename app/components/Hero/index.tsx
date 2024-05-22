@@ -1,16 +1,22 @@
+"use client";
+
 import { Button } from "@mantine/core";
-import { IconChevronCompactRight, IconChevronRight } from "@tabler/icons-react";
+import { IconChevronRight } from "@tabler/icons-react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 export default function Hero() {
+  const router = useRouter();
+
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8">
       <div className="py-12 text-center lg:text-left">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col lg:flex-row items-center lg:justify-between">
             <div className="lg:w-7/12 lg:pr-6">
-              <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-black">
-                Crypto products,{"\n"} Your Gateway to the <br />
+              <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-black">
+                Crypto products,
+                <br /> Your Gateway to the <br />
                 <span className="text-white bg-[#5B4CF0]">
                   Future of Shopping
                 </span>
@@ -28,17 +34,23 @@ export default function Hero() {
 
               <div className="mt-8 flex gap-3 justify-center lg:justify-start">
                 <Button
+                  type="button"
                   variant="outline"
                   size="lg"
                   rightSection={<IconChevronRight />}
+                  onClick={() => router.push("/seller/collections")}
+                  color="#5B4CF0"
                 >
                   Sell products
                 </Button>
 
                 <Button
+                  type="button"
                   variant="filled"
                   size="lg"
                   rightSection={<IconChevronRight />}
+                  onClick={() => router.push("/marketplace")}
+                  color="#5B4CF0"
                 >
                   Go to marketplace
                 </Button>
