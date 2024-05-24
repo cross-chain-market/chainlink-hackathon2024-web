@@ -184,7 +184,7 @@
   font-weight: 500;
   text-align: left;
   color: #060326;
-  width: 75%;
+  max-width: 75%;
   line-height: 30px;
 }
 
@@ -299,6 +299,9 @@
   height: 233px;
 }
 
+.meta_3 .title {
+  font-size: 14px;
+}
 .buy_now {
   padding: 16px 10px 16px 10px;
   border-radius: 4px;

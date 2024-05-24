@@ -32,11 +32,14 @@ export interface Product {
   fiat_price: number;
   total_amount: number;
   listed_amount: number;
-  attributes: Attributes;
+  sku: string;
+  attributes: {
+    attribute: string;
+    value: string;
+  }[];
   created_at: string;
-}
-
-export interface Attributes {
-  attribute_1: string;
-  attribute_2: string;
+  network: string;
+  chain: number;
+  platform_fee: number;
+  shipping: number;
 }
