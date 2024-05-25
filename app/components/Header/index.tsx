@@ -5,12 +5,16 @@ import { useDisclosure } from "@mantine/hooks";
 import { deployCollection } from '../../lib/client-services/collectionFactoryContract';
 import { buyListing } from '../../lib/client-services/marketplaceContract';
 import { getAVAXUSD } from '../../lib/client-services/priceFeedContract';
+import { allowMarketplaceToSellCollection } from "../../lib/client-services/collectionContract";
+import { useRouter } from "next/navigation";
 import classes from "./Header.module.css";
 
 import ConnectButton from "../WalletConnect";
 
 export default function Header() {
   const [opened, { toggle }] = useDisclosure(false);
+  const router = useRouter();
+
 
   const deployCollectionClick = async () => {
     await deployCollection(
@@ -40,16 +44,19 @@ export default function Header() {
     <header className={classes.header}>
       <Container px={90} fluid className={classes.inner}>
         <div className="flex gap-2 items-center">
-        <img
+          <button onClick={() => router.push("/")} className={'flex gap-2 items-center m-r-3'}>
+          <img
           src="https://cdn-icons-png.freepik.com/512/2152/2152349.png"
-          style={{ width: 50, height: 50 }}
+          style={{ width: 50, height: 50, cursor: 'pointer' }}
           className={"logo"}
         />{" "}
         <Title fz="lg" className={"text-dark"}>
           Cross-Chain Marketplace
         </Title>
+          </button>
         {/* <DeployCollectionButton/> */}
         <Button onClick={deployCollectionClick}>add collection</Button>
+        <Button onClick={allowMarketplaceToSellCollectionClick}>approve marketplace to sell</Button>
         <Button onClick={auxToUsdBtn}>get AUX to usd</Button>
         <Button onClick={buyListingBtn}>buy listing</Button>
         </div>
