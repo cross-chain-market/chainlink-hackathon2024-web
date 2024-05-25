@@ -7,7 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-export function Footer() {
+export default function Footer() {
   const router = useRouter();
   const { open } = useWeb3Modal();
 
