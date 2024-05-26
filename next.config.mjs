@@ -3,20 +3,13 @@ import "dotenv/config";
 const nextConfig = {
   reactStrictMode: false,
   env: {
-<<<<<<< HEAD
-    marketplace_avalanche_fuji_contract_address: process.env.marketplace_avalanche_fuji_contract_address,
-    collectionsFactory_avalanche_fuji_contract_address: process.env.collectionsFactory_avalanche_fuji_contract_address,
-    priceFeed_avalanche_fuji_contract_address: '0x1b78029aEe9D5A168b165A8089294505D4ee27A1',
-    WORKING_ENV: process.env.WORKING_ENV
-=======
     marketplace_avalanche_fuji_contract_address:
       process.env.marketplace_avalanche_fuji_contract_address,
     collectionsFactory_avalanche_fuji_contract_address:
       process.env.collectionsFactory_avalanche_fuji_contract_address,
     priceFeed_avalanche_fuji_contract_address:
-      process.env.priceFeed_avalanche_fuji_contract_address,
+      "0x1b78029aEe9D5A168b165A8089294505D4ee27A1",
     WORKING_ENV: process.env.WORKING_ENV,
->>>>>>> 13e7e984d874f7ed5584003aa59c8f5629794701
   },
   images: {
     remotePatterns: [
