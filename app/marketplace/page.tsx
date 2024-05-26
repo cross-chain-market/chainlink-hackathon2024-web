@@ -2,8 +2,7 @@
 import { Container } from "@mantine/core";
 
 import Header from "../components/Header";
-import Footer from "../components/Footer";
-// import { DeployedContractProvider } from "../clientProviders";
+// import Footer from "../components/Footer";
 import classes from "./Marketplace.module.css";
 import { useEffect, useState } from "react";
 import { Product } from "../types/marketplace";
