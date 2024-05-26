@@ -2,35 +2,16 @@
 
 import { useDisclosure } from "@mantine/hooks";
 import { Container } from "@mantine/core";
-import { useEffect } from "react";
 import Image from "next/image";
 
-import CollectionFactoryEventWatcher from "../../lib/client-services/collectionFactoryContract/CollectionFactoryEventWatcher";
-import { watchEvents } from "../../lib/client-services/quicknode";
 import Hero from "../Hero";
 import { Team } from "../Team";
 
 export default function MainSection() {
   useDisclosure(false);
 
-  useEffect(() => {
-    let listeners: any;
-    async function startListeners() {
-      listeners = await watchEvents();
-    }
-
-    startListeners();
-
-    return () => {
-      listeners.forEach((l: any) => {
-        l();
-      });
-    };
-  }, []);
-
   return (
     <>
-      <CollectionFactoryEventWatcher />
       <div className="flex flex-col gap-10">
         <Hero />
 

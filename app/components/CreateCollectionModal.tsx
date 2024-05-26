@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Modal, Select, TextInput, Textarea, Button } from "@mantine/core";
 import { useLocalCollections } from "../hooks/useLocalCollections";
 import { useForm } from "@mantine/form";
@@ -9,19 +10,15 @@ const createCollectionSchema = z.object({
   name: z.string().min(2, { message: "Name should have at least 2 letters" }),
   description: z
     .string()
-    .min(2, { message: "Name should have at least 2 letters" }),
+    .min(2, { message: "Description should have at least 2 letters" })
+    .max(50, { message: "Description should have less then 20 letters" }),
   base_image_path: z
     .string()
     .min(2, { message: "Name should have at least 2 letters" }),
-  image_id: z
-    .string()
-    .min(2, { message: "Name should have at least 2 letters" }),
   network_id: z
-    .string()
-    .min(2, { message: "Name should have at least 2 letters" }),
+    .string(),
   chain_id: z
     .string()
-    .min(2, { message: "Name should have at least 2 letters" }),
 });
 
 interface CreateCollectionModalProps {
@@ -40,7 +37,6 @@ export function CreateCollectionModal({
       name: "",
       description: "",
       base_image_path: "",
-      image_id: "",
       network_id: "",
       chain_id: "",
     },
@@ -55,8 +51,37 @@ export function CreateCollectionModal({
     router.push(`/seller/collections/${createdCollection.id}`);
   };
 
+  const networkOptions = [
+    { label: "Avalanche", value: "avalanche" },
+    { label: "Polygon", value: "polygon" },
+    { label: "Arbitrum", value: "arbitrum" },
+    { label: "Optimism", value: "optimism" },
+    { label: "Ethereum", value: "ethereum" }
+  ];
+
+  const chainOptions = [
+    { label: "Avalanche-Fuji", value: "43113" },
+    { label: "Polyogon-Amoy", value: "80002" },
+    { label: "Arbitrum Sepolia", value: "421614" },
+    { label: "Optimism Sepolia", value: "11155420" },
+    { label: "Sepolia", value: "11155111" }
+  ];
+
+  const setChainValue = (selectedNetwork: string) => {
+    selectedNetwork === "Avalanche" && form.setFieldValue('chain_id', "43113");
+    selectedNetwork === "Polygon" && form.setFieldValue('chain_id', "80002");
+    selectedNetwork === "Arbitrum" && form.setFieldValue('chain_id', "421614");
+    selectedNetwork === "Optimism" && form.setFieldValue('chain_id', "11155420");
+    selectedNetwork === "Ethereum" && form.setFieldValue('chain_id', "11155111");
+  }
+
+  const onCloseClick = () => {
+    form.reset();
+    onClose();
+  }
+
   return (
-    <Modal opened={opened} onClose={onClose} title="Create Collection" centered>
+    <Modal opened={opened} onClose={onCloseClick} title="Create Collection (test networks)" centered>
       <form
         onSubmit={form.onSubmit(handleSubmit, (errors) => console.log(errors))}
         className="flex flex-col gap-4"
@@ -64,7 +89,10 @@ export function CreateCollectionModal({
         <Select
           label="Network"
           placeholder="Pick value"
-          data={["React", "Angular", "Vue", "Svelte"]}
+          data={networkOptions}
+          clearable
+          searchable
+          onSearchChange={setChainValue}
           key={form.key("network_id")}
           {...form.getInputProps("network_id")}
         />
@@ -72,7 +100,8 @@ export function CreateCollectionModal({
         <Select
           label="Chain"
           placeholder="Pick value"
-          data={["React", "Angular", "Vue", "Svelte"]}
+          data={chainOptions}
+          readOnly
           key={form.key("chain_id")}
           {...form.getInputProps("chain_id")}
         />
@@ -96,13 +125,6 @@ export function CreateCollectionModal({
           placeholder="Base path to IPFS provider"
           key={form.key("base_image_path")}
           {...form.getInputProps("base_image_path")}
-        />
-
-        <TextInput
-          label="Image ID"
-          placeholder="ID of the image"
-          key={form.key("image_id")}
-          {...form.getInputProps("image_id")}
         />
 
         <Button type="submit">Create</Button>

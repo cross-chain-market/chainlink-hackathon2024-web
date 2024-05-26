@@ -9,6 +9,7 @@ const nextConfig = {
       process.env.collectionsFactory_avalanche_fuji_contract_address,
     priceFeed_avalanche_fuji_contract_address:
       process.env.priceFeed_avalanche_fuji_contract_address,
+    avalanacheFujiEndpoint: process.env.avalanacheFujiEndpoint,
     WORKING_ENV: process.env.WORKING_ENV,
   },
   images: {

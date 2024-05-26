@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
 import { headers } from 'next/headers'
 import { Inter } from "next/font/google";
-import { Providers } from "./serverProviders";
-
+import { Providers } from "./MantineProviders";
+import NotificationProvider from "./NotificationProvider";
 import { cookieToInitialState } from "wagmi";
 
 import { config } from "@/config";
 import Web3ModalProvider from "@/context";
 
 import "@mantine/core/styles.css";
-
+import '@mantine/notifications/styles.css';
 import "./globals.css";
 import "@mantine/dates/styles.css";
 
@@ -31,7 +31,9 @@ export default function RootLayout({
       <body className={inter.className}>
         <Providers>
           <Web3ModalProvider initialState={initialState}>
-            {children}
+            <NotificationProvider>
+              {children}
+            </NotificationProvider>
           </Web3ModalProvider>
         </Providers>
       </body>

@@ -4,7 +4,7 @@ const TEAM_MEMBERS = [
   {
     name: "Tal Waserman",
     title: "Full stack & Web3 developer",
-    stack: "JavaScript, TypeScript, Go, React and Node",
+    stack: "Application Architecture, React, Solidity",
     image: "/team-1.png",
   },
   {
