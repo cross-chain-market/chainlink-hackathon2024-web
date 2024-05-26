@@ -5,7 +5,7 @@ const nextConfig = {
   env: {
     marketplace_avalanche_fuji_contract_address: process.env.marketplace_avalanche_fuji_contract_address,
     collectionsFactory_avalanche_fuji_contract_address: process.env.collectionsFactory_avalanche_fuji_contract_address,
-    priceFeed_avalanche_fuji_contract_address: process.env.priceFeed_avalanche_fuji_contract_address,
+    priceFeed_avalanche_fuji_contract_address: '0x1b78029aEe9D5A168b165A8089294505D4ee27A1',
     WORKING_ENV: process.env.WORKING_ENV
   },
   images: {

@@ -5,3 +5,4 @@ export default interface IItems {
     favorite: boolean;
     createdAt: string;
 }
+

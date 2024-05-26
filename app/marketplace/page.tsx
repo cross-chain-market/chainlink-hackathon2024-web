@@ -7,42 +7,95 @@ import Footer from "../components/Footer";
 import classes from "./Marketplace.module.css";
 import { useEffect, useState } from "react";
 import { Product } from "../types/marketplace";
-import { dummyProducts } from "../lib/services/items/service";
+import { buyItem, getAllListing } from "../lib/services/items/service";
 import { getAVAXUSD } from "../lib/client-services/priceFeedContract";
+import { useAccount } from "wagmi";
 
 export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [products, setProducts] = useState<Product[]>(dummyProducts);
+  const [products, setProducts] = useState<Product[]>();
   const [selectedProduct, setSelectedProducts] = useState<Product | null>(null);
   const [item_amount, setItem_amount] = useState<number>(1);
+  const [avaxInUSD, setAvaxInUsd] = useState<number>(0);
+  const [amount, setAmount] = useState<number>(0);
+
+  const { address, chain } = useAccount();
+
+  useEffect(() => {
+    console.log(chain, "chain");
+    const getPriceAndListings = async () => {
+      const price = await getAVAXUSD();
+      console.log(price, "price");
+      const listings = await getAllListing();
+      listings?.forEach((listing) => {
+        (listing.shipping = 13), (listing.platform_fee = 2);
+        // listing.network_id = "avalanche_fuji";
+      });
+      setAvaxInUsd(price || 0);
+      setProducts(listings || []);
+    };
+    getPriceAndListings();
+  }, []);
 
   const viewProductDetails = (product: Product) => {
     setSelectedProducts(product);
+    handleTotalAmount(product, item_amount);
     setIsModalOpen((prev) => !prev);
   };
 
-  // const b = async () => {
-  //   const a = await getAVAXUSD();
-  //   console.log(a, 'aaaa');
-  // };
-  // useEffect(() => {
-  //   b();
-  // }, []);
+  const handleTotalAmount = (product: Product, item_amount: number) => {
+    setAmount(
+      item_amount *
+        (product.fiat_price +
+          product.shipping +
+          product.fiat_price * (product.platform_fee / 100))
+    );
+  };
 
-  const handleAmount = (type: "-" | "+") => {
+  const handleAmountOfItem = async (type: "-" | "+") => {
+    if (!selectedProduct) {
+      return;
+    }
+    const price = await getAVAXUSD();
+    setAvaxInUsd(price || 0);
+
     switch (type) {
       case "-":
         if (item_amount == 1) {
           return;
         }
+        setAmount(
+          (item_amount - 1) *
+            (selectedProduct.fiat_price +
+              selectedProduct.shipping +
+              selectedProduct.fiat_price * (selectedProduct.platform_fee / 100))
+        );
         setItem_amount((prev) => prev - 1);
+
         break;
       case "+":
+        setAmount(
+          (item_amount + 1) *
+            (selectedProduct.fiat_price +
+              selectedProduct.shipping +
+              selectedProduct.fiat_price * (selectedProduct.platform_fee / 100))
+        );
         setItem_amount((prev) => prev + 1);
         break;
       default:
         break;
     }
+  };
+
+  const buyAnItem = async () => {
+    if (!amount || !selectedProduct || !address) {
+      return;
+    }
+    const res = await buyItem({
+      amount,
+      from_address: "0xa",
+      to_address: address,
+    });
   };
 
   return (
@@ -97,16 +150,16 @@ export default function Home() {
                     className={classes.product_img}
                     style={{ background: "url(./assets/product-img.svg)" }}
                   >
-                    {product.network == "Amoy" && (
+                    {product.network_id == "amoy" && (
                       <img src="./assets/Amoy.svg" className="p-2" alt="" />
                     )}
-                    {product.network == "Optimism" && (
+                    {product.network_id == "optimism" && (
                       <img src="./assets/Optimism.svg" className="p-2" alt="" />
                     )}
-                    {product.network == "Abitrum" && (
+                    {product.network_id == "abitrum" && (
                       <img src="./assets/Abitrum.svg" className="p-2" alt="" />
                     )}
-                    {product.network == "Avalanche" && (
+                    {product.network_id == "avalanche_fuji" && (
                       <img
                         src="./assets/Avalanche.svg"
                         className="p-2"
@@ -161,7 +214,7 @@ export default function Home() {
                       </div>
                     </div>
 
-                    <p className={classes.sku}> SKU: {selectedProduct.sku}</p>
+                    {/* <p className={classes.sku}> SKU: {selectedProduct.sku}</p> */}
                   </div>
 
                   <div className="flex gap-4 mt-5">
@@ -204,7 +257,7 @@ export default function Home() {
                           <div className="flex gap-3">
                             <div
                               className={classes.opr_bx}
-                              onClick={() => handleAmount("-")}
+                              onClick={() => handleAmountOfItem("-")}
                             >
                               <img src="assets/icon-minus.svg" alt="" />
                             </div>
@@ -215,7 +268,7 @@ export default function Home() {
                             </div>
                             <div
                               className={classes.opr_bx}
-                              onClick={() => handleAmount("+")}
+                              onClick={() => handleAmountOfItem("+")}
                             >
                               <img src="assets/icon-plus.svg" alt="" />
                             </div>
@@ -229,16 +282,7 @@ export default function Home() {
                             <p className={classes.det}>Total price:</p>
                           </div>
                           <div>
-                            <p className={classes.det_1}>
-                              $
-                              {(
-                                item_amount *
-                                (selectedProduct.fiat_price +
-                                  selectedProduct.shipping +
-                                  selectedProduct.fiat_price *
-                                    (selectedProduct.platform_fee / 100))
-                              ).toFixed(2)}
-                            </p>
+                            <p className={classes.det_1}>${amount}</p>
                           </div>
                         </div>
                         <div className={`${classes.meta_row} mt-3`}>
@@ -246,7 +290,9 @@ export default function Home() {
                             <p className={classes.det}>Total tokens:</p>
                           </div>
                           <div>
-                            <p className={classes.det_1}>45.3 AVAX</p>
+                            <p className={classes.det_1}>
+                              {(amount / avaxInUSD).toFixed(2)} AVAX
+                            </p>
                           </div>
                         </div>
                       </div>
@@ -269,22 +315,23 @@ export default function Home() {
                               <p className={classes.ch_ti}>Chain path:</p>
                             </div>
                             <div>
-                              {selectedProduct.network == "Amoy" && (
+                              {selectedProduct.network_id == "amoy" && (
                                 <img src="./assets/Amoy.svg" alt="" />
                               )}
-                              {selectedProduct.network == "Optimism" && (
+                              {selectedProduct.network_id == "optimism" && (
                                 <img src="./assets/Optimism.svg" alt="" />
                               )}
-                              {selectedProduct.network == "Abitrum" && (
+                              {selectedProduct.network_id == "abitrum" && (
                                 <img src="./assets/Abitrum.svg" alt="" />
                               )}
-                              {selectedProduct.network == "Avalanche" && (
+                              {selectedProduct.network_id ==
+                                "avalanche_fuji" && (
                                 <img src="./assets/Avalanche.svg" alt="" />
                               )}
                             </div>
                             <div>
                               <p className={classes.ch_dec}>
-                                {selectedProduct.network}
+                                {selectedProduct.network_id?.replace("_", " ")}
                               </p>
                             </div>
                           </div>
@@ -297,10 +344,21 @@ export default function Home() {
                               <p className={classes.ch_ti}>Test net:</p>
                             </div>
                             <div>
-                              <img src="assets/avalanche.svg" alt="" />
+                              {chain?.name == "Amoy" && (
+                                <img src="./assets/Amoy.svg" alt="" />
+                              )}
+                              {selectedProduct.network_id == "Optimism" && (
+                                <img src="./assets/Optimism.svg" alt="" />
+                              )}
+                              {selectedProduct.network_id == "Abitrum" && (
+                                <img src="./assets/Abitrum.svg" alt="" />
+                              )}
+                              {chain?.name == "Avalanche Fuji" && (
+                                <img src="./assets/Avalanche.svg" alt="" />
+                              )}
                             </div>
                             <div>
-                              <p className={classes.ch_dec}>Polygon amoy</p>
+                              <p className={classes.ch_dec}>{chain?.name}</p>
                             </div>
                           </div>
                         </div>
@@ -310,36 +368,35 @@ export default function Home() {
                         className={`mt-4  ${classes.meta_1} ${classes.meta_3} `}
                       >
                         <p className={classes.title}>Attribute</p>
-
-                        <div className={`${classes.meta_row} mt-3`}>
-                          <div>
-                            <p className={classes.det}>Size:</p>
-                          </div>
-                          <div>
-                            <p className={classes.det_1}>L</p>
-                          </div>
-                        </div>
-                        <div className={`${classes.meta_row} mt-3`}>
-                          <div>
-                            <p className={classes.det}>Color:</p>
-                          </div>
-                          <div>
-                            <p className={classes.det_1}>Brown</p>
-                          </div>
-                        </div>
-                        <div className={`${classes.meta_row} mt-3`}>
-                          <div>
-                            <p className={classes.det}>Fabric:</p>
-                          </div>
-                          <div>
-                            <p className={classes.det_1}>Leather</p>
-                          </div>
-                        </div>
+                        {Object.entries(selectedProduct.attributes as any).map(
+                          ([key, value], index) => (
+                            <div
+                              className={`${classes.meta_row} mt-3`}
+                              key={index}
+                            >
+                              <div>
+                                <p className={classes.det}>
+                                  {key.charAt(0).toUpperCase() + key.slice(1)}:
+                                </p>
+                              </div>
+                              <div>
+                                <p className={classes.det_1}>
+                                  {value as string}
+                                </p>
+                              </div>
+                            </div>
+                          )
+                        )}
                       </div>
                     </div>
                   </div>
 
-                  <button className={classes.buy_now}>Buy now</button>
+                  <button
+                    onClick={() => buyAnItem()}
+                    className={classes.buy_now}
+                  >
+                    Buy now
+                  </button>
                 </div>
               </div>
             </div>

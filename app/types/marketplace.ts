@@ -1,3 +1,5 @@
+import { Address } from "viem";
+
 export interface Collection {
   id: string;
   name: string;
@@ -38,8 +40,14 @@ export interface Product {
     value: string;
   }[];
   created_at: string;
-  network: string;
+  network_id: string;
   chain: number;
   platform_fee: number;
   shipping: number;
+}
+
+export interface IBuyItemPayload {
+  from_address: Address;
+  to_address: Address;
+  amount: number;
 }

@@ -28,6 +28,7 @@ export async function getAVAXUSD() {
   try {
     const address = contractAddress[
       `${process.env.WORKING_ENV}_${chainData.chain}` || "test" ] as Address;
+      console.log(address, 'address', `${process.env.WORKING_ENV}_${chainData.chain}`)
 
     const decimals: number = Number(await readContract(config, {
       abi: contractJSON.abi,
