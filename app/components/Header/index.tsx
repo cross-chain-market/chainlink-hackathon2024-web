@@ -6,7 +6,6 @@ import { deployCollection } from '../../lib/client-services/collectionFactoryCon
 import { buyListing } from '../../lib/client-services/marketplaceContract';
 import { getAVAXUSD } from '../../lib/client-services/priceFeedContract';
 import { allowMarketplaceToSellCollection } from "../../lib/client-services/collectionContract";
-import { notifications } from '@mantine/notifications';
 import { useRouter } from "next/navigation";
 import classes from "./Header.module.css";
 
@@ -16,12 +15,6 @@ export default function Header() {
   const [opened, { toggle }] = useDisclosure(false);
   const router = useRouter();
 
-  const notify = () => {
-    notifications.show({
-      title: 'Default notification',
-      message: 'Hey there, your code is awesome! 🤥',
-    })
-  }
   const deployCollectionClick = async () => {
     await deployCollection(
       "test-collection-5",
@@ -65,7 +58,6 @@ export default function Header() {
         <Button onClick={allowMarketplaceToSellCollectionClick}>approve marketplace to sell</Button>
         <Button onClick={auxToUsdBtn}>get AUX to usd</Button>
         <Button onClick={buyListingBtn}>buy listing</Button>
-        <Button onClick={notify}>notify</Button>
         </div>
 
         <Group gap={5} visibleFrom="xs">

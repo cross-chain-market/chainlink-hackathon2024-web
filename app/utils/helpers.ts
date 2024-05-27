@@ -53,3 +53,19 @@ export const chainInfo = (chainId: number) => {
 
   return nameHash[chainId];
 }
+
+export const networkOptions = [
+  { label: "Avalanche", value: "avalanche" },
+  { label: "Polygon", value: "polygon" },
+  { label: "Arbitrum", value: "arbitrum" },
+  { label: "Optimism", value: "optimism" },
+  { label: "Ethereum", value: "ethereum" }
+];
+
+export const chainOptions = [
+  { label: "Avalanche-Fuji", value: "43113" },
+  { label: "Polyogon-Amoy", value: "80002" },
+  { label: "Arbitrum Sepolia", value: "421614" },
+  { label: "Optimism Sepolia", value: "11155420" },
+  { label: "Sepolia", value: "11155111" }
+];

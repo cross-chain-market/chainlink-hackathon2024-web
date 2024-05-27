@@ -87,6 +87,16 @@ export function CreateItemModal({
       >
         <div className="grid grid-cols-3 gap-4">
           <div className="flex flex-col gap-4">
+            <div style={{ width: '100%', position: 'relative', top: '8px'}}>
+              <NumberInput
+                label="Image ID in IPFS provider"
+                placeholder="Image ID"
+                hideControls
+                key={form.key("image_id")}
+                {...form.getInputProps("image_id")}
+              />
+            </div>
+
             <TextInput
               label="Name"
               placeholder="Name of item"
@@ -136,15 +146,6 @@ export function CreateItemModal({
                 quality={100}
                 className="object-cover"
               />}
-            </div>
-            <div style={{ width: '100%', position: 'relative', top: '8px'}}>
-              <NumberInput
-                label="Image ID in IPFS provider"
-                placeholder="Image ID"
-                hideControls
-                key={form.key("image_id")}
-                {...form.getInputProps("image_id")}
-              />
             </div>
           </div>
           <div className="flex flex-col gap-4">

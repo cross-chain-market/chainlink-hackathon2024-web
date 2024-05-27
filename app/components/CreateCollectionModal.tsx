@@ -1,9 +1,9 @@
-import { useEffect } from "react";
 import { Modal, Select, TextInput, Textarea, Button } from "@mantine/core";
 import { useLocalCollections } from "../hooks/useLocalCollections";
 import { useForm } from "@mantine/form";
 import { zodResolver } from "mantine-form-zod-resolver";
 import { z } from "zod";
+import { networkOptions, chainOptions} from "../utils/helpers";
 import { useRouter } from "next/navigation";
 
 const createCollectionSchema = z.object({
@@ -50,22 +50,6 @@ export function CreateCollectionModal({
     onClose();
     router.push(`/seller/collections/${createdCollection.id}`);
   };
-
-  const networkOptions = [
-    { label: "Avalanche", value: "avalanche" },
-    { label: "Polygon", value: "polygon" },
-    { label: "Arbitrum", value: "arbitrum" },
-    { label: "Optimism", value: "optimism" },
-    { label: "Ethereum", value: "ethereum" }
-  ];
-
-  const chainOptions = [
-    { label: "Avalanche-Fuji", value: "43113" },
-    { label: "Polyogon-Amoy", value: "80002" },
-    { label: "Arbitrum Sepolia", value: "421614" },
-    { label: "Optimism Sepolia", value: "11155420" },
-    { label: "Sepolia", value: "11155111" }
-  ];
 
   const setChainValue = (selectedNetwork: string) => {
     selectedNetwork === "Avalanche" && form.setFieldValue('chain_id', "43113");

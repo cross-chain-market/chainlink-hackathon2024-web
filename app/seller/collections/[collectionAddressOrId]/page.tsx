@@ -6,8 +6,8 @@ import { ActionIcon, Button, Table } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { useEffect, useState } from "react";
 import { IconTrash } from "@tabler/icons-react";
-import {  allowMarketplaceToSellCollection } from "@/app/lib/client-service/collectionContract";
 import { CreateItemModal } from "@/app/components/CreateItemModal";
+import { ApproveCollectionModal } from "@/app/components/ApproveCollectionModal";
 import { useLocalCollections } from "@/app/hooks/useLocalCollections";
 import { LocalCollection } from "@/app/types/marketplace";
 import { createCollection } from "@/app/lib/services";
@@ -20,9 +20,10 @@ export default function Page({
     undefined
   );
 
-  const { address, isConnecting, isDisconnected } = useAccount();
+  const { address } = useAccount();
   const [opened, { open, close }] = useDisclosure(false);
-  const { collections, removeItem } = useLocalCollections();
+  const [ApproveDialogOpened, { open: openApprove, close: closeApprove }] = useDisclosure(false);
+  const { collections, removeItem, updateCollectionId, updateCollectionSaleApproval } = useLocalCollections();
 
   useEffect(() => {
     const foundCollection = collections.find(
@@ -31,7 +32,7 @@ export default function Page({
     setCollection(foundCollection);
   }, [collections, params.collectionAddressOrId]);
 
-  function publishCollection() {
+  async function publishCollection() {
     const collection = collections.find(
       (collection) => collection.id === params.collectionAddressOrId
     );
@@ -45,13 +46,15 @@ export default function Page({
       address
     });
     if (address && collection) {
-      createCollection(collection, address);
+      const res = await createCollection(collection, address);
+      if(collection?.id && res?.id) {
+        updateCollectionId(collection.id, res.id);
+      }
     }
   }
 
-  async function approveCollection() {
-    //TODO
-    //await allowMarketplaceToSellCollection(collectionAddress: string, marketplaceAddress: string, approve: boolean);
+  function approveCollection() {
+    openApprove();
   }
 
   if (!collection) {
@@ -73,14 +76,15 @@ export default function Page({
         <div>
           <h2 className="font-bold text-xl">{collection.name}</h2>
           <p className="w-100">{collection.description}</p>
+          <p className="w-100">{collection.address}</p>
         </div>
 
         {address && <div className="flex gap-2">
-          <Button variant="outline" onClick={open}>
+          <Button variant="outline" onClick={open} disabled={collection.address ?? false}>
             Add Item
           </Button>
-          <Button disabled={collection.items.length === 0} onClick={publishCollection}>Publish Collection</Button>
-          <Button disabled={collection.items.length === 0} onClick={approveCollection}>Approve Collection Sale</Button>
+          <Button disabled={collection.items.length === 0 || collection.address || false} onClick={publishCollection}>Publish Collection</Button>
+          <Button disabled={!collection.address} onClick={approveCollection}>{collection.isApproved ? "Revok approval" : "Approve Collection Sale"}</Button>
         </div>}
       </header>
 
@@ -118,6 +122,7 @@ export default function Page({
                 </Table.Td>
                 <Table.Td>
                   <ActionIcon
+                    disabled={collection.address || false}
                     variant="default"
                     radius="xl"
                     onClick={() => removeItem(collection.id, item.id)}
@@ -162,6 +167,13 @@ export default function Page({
         onClose={close}
         opened={opened}
         collectionId={collection.id}
+      />
+      <ApproveCollectionModal
+        collectionId={collection.id}
+        collectionAddress={collection.address}
+        opened={ApproveDialogOpened}
+        onClose={closeApprove}
+        isApproved={collection.isApproved}
       />
     </>
   );
