@@ -1,15 +1,16 @@
 "use client";
 
 import Image from "next/image";
+import { useAccount } from 'wagmi'
 import { ActionIcon, Button, Table } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { useEffect, useState } from "react";
 import { IconTrash } from "@tabler/icons-react";
-
 import { CreateItemModal } from "@/app/components/CreateItemModal";
+import { ApproveCollectionModal } from "@/app/components/ApproveCollectionModal";
 import { useLocalCollections } from "@/app/hooks/useLocalCollections";
 import { LocalCollection } from "@/app/types/marketplace";
-
+import { createCollection } from "@/app/lib/services";
 export default function Page({
   params,
 }: {
@@ -19,8 +20,10 @@ export default function Page({
     undefined
   );
 
+  const { address } = useAccount();
   const [opened, { open, close }] = useDisclosure(false);
-  const { collections, removeItem } = useLocalCollections();
+  const [ApproveDialogOpened, { open: openApprove, close: closeApprove }] = useDisclosure(false);
+  const { collections, removeItem, updateCollectionId, updateCollectionSaleApproval } = useLocalCollections();
 
   useEffect(() => {
     const foundCollection = collections.find(
@@ -29,7 +32,7 @@ export default function Page({
     setCollection(foundCollection);
   }, [collections, params.collectionAddressOrId]);
 
-  function publishCollection() {
+  async function publishCollection() {
     const collection = collections.find(
       (collection) => collection.id === params.collectionAddressOrId
     );
@@ -40,7 +43,18 @@ export default function Page({
 
     console.log({
       collection,
+      address
     });
+    if (address && collection) {
+      const res = await createCollection(collection, address);
+      if(collection?.id && res?.id) {
+        updateCollectionId(collection.id, res.id);
+      }
+    }
+  }
+
+  function approveCollection() {
+    openApprove();
   }
 
   if (!collection) {
@@ -49,36 +63,39 @@ export default function Page({
 
   return (
     <>
-      <header className="flex justify-between border-b">
+    <div style={{ width: '100%', height: '230px', position: 'relative', paddingBottom: '2' }}>
+          <Image
+            src={`https://ipfs.io/ipfs/${collection.base_image_path}/collection_banner.png`}
+            alt=""
+            layout="fill"
+            quality={100}
+            className="object-cover"
+          />
+        </div>
+      <header className="flex justify-between mb-5">
         <div>
           <h2 className="font-bold text-xl">{collection.name}</h2>
-          <p>{collection.description}</p>
-          <p>Collection address</p>
+          <p className="w-100">{collection.description}</p>
+          <p className="w-100">{collection.address}</p>
         </div>
 
-        <Image
-          src={`${collection.base_image_path}/${collection.image_id}`}
-          alt=""
-          width={90}
-          height={90}
-          className="object-cover"
-        />
-
-        <div className="flex gap-2">
-          <Button variant="outline" onClick={open}>
+        {address && <div className="flex gap-2">
+          <Button variant="outline" onClick={open} disabled={collection.address ?? false}>
             Add Item
           </Button>
-          <Button onClick={publishCollection}>Publish Collection</Button>
-        </div>
+          <Button disabled={collection.items.length === 0 || collection.address || false} onClick={publishCollection}>Publish Collection</Button>
+          <Button disabled={!collection.address} onClick={approveCollection}>{collection.isApproved ? "Revok approval" : "Approve Collection Sale"}</Button>
+        </div>}
       </header>
 
       <section>
         <h3 className="text-lg font-semibold">Items in store</h3>
 
-        <Table>
+        <Table className="border-solid border-1 border-gray-600">
           <Table.Thead>
             <Table.Tr>
               <Table.Th>Name</Table.Th>
+              <Table.Th>Image id</Table.Th>
               <Table.Th>Description</Table.Th>
               <Table.Th>Price</Table.Th>
               <Table.Th>Total Amount</Table.Th>
@@ -92,8 +109,9 @@ export default function Page({
             {collection.items.map((item) => (
               <Table.Tr key={item.id}>
                 <Table.Td>{item.name}</Table.Td>
+                <Table.Td>{item.image_id}</Table.Td>
                 <Table.Td>{item.description}</Table.Td>
-                <Table.Td>{item.fiat_price}</Table.Td>
+                <Table.Td>${item.fiat_price}</Table.Td>
                 <Table.Td>{item.total_amount}</Table.Td>
                 <Table.Td>{item.listed_amount}</Table.Td>
                 <Table.Td>
@@ -104,6 +122,7 @@ export default function Page({
                 </Table.Td>
                 <Table.Td>
                   <ActionIcon
+                    disabled={collection.address || false}
                     variant="default"
                     radius="xl"
                     onClick={() => removeItem(collection.id, item.id)}
@@ -118,7 +137,7 @@ export default function Page({
         </Table>
       </section>
 
-      <section>
+      {/* <section>
         <h3 className="text-lg font-semibold">Transactions</h3>
 
         <Table.ScrollContainer minWidth={500}>
@@ -141,12 +160,20 @@ export default function Page({
             <Table.Tbody></Table.Tbody>
           </Table>
         </Table.ScrollContainer>
-      </section>
+      </section> */}
 
       <CreateItemModal
+        baseHash={collection.base_image_path}
         onClose={close}
         opened={opened}
         collectionId={collection.id}
+      />
+      <ApproveCollectionModal
+        collectionId={collection.id}
+        collectionAddress={collection.address}
+        opened={ApproveDialogOpened}
+        onClose={closeApprove}
+        isApproved={collection.isApproved}
       />
     </>
   );

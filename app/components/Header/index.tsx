@@ -15,7 +15,6 @@ export default function Header() {
   const [opened, { toggle }] = useDisclosure(false);
   const router = useRouter();
 
-
   const deployCollectionClick = async () => {
     await deployCollection(
       "test-collection-5",

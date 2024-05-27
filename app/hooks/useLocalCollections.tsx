@@ -52,6 +52,45 @@ export function useLocalCollections() {
     );
   }
 
+  function updateCollectionId(id: string, collectionId: string) {
+    setCollections((prevCollections) =>
+      prevCollections.map((collection) =>
+        collection.id === id
+          ? {
+              ...collection,
+              collectionId
+            }
+          : collection
+      )
+    );
+  }
+
+  function updateCollectionAddress(name: string, address: string) {
+    setCollections((prevCollections) =>
+      prevCollections.map((collection) =>
+        collection.name === name
+          ? {
+              ...collection,
+              address
+            }
+          : collection
+      )
+    );
+  }
+
+  function updateCollectionSaleApproval(id: string, isApproved: boolean) {
+    setCollections((prevCollections) =>
+      prevCollections.map((collection) =>
+        collection.id === id
+          ? {
+              ...collection,
+              isApproved
+            }
+          : collection
+      )
+    );
+  }
+
   return {
     collections,
     setCollections,
@@ -59,5 +98,8 @@ export function useLocalCollections() {
     removeCollection,
     addItem,
     removeItem,
+    updateCollectionId,
+    updateCollectionAddress,
+    updateCollectionSaleApproval
   };
 }
