@@ -1,41 +1,59 @@
+# Merado - Front End
 
-## Cross-chain RWA marketplace DApp - for buying and selling Real world assets cross chain
+> Cross-chain marketplace of Real World Assets.
 
-This DApp was created with NextJS, ReactJS, EthersJS and QuickNode SDK
-as part of the chainlink hackathon 2024.
+This is the frontend for the _[Merado](https://merado.vercel.app)_ hackathon project at [Chainlink Block Magic](https://chain.link/hackathon).
 
-Mantine is also used for react component library
+## Tech Stack
 
-
+- [React](https://react.dev/)
+- [Nextjs](https://nextjs.org/)
+- [QuickNode](https://www.quicknode.com/)
+- [Mantine](https://mantine.dev/)
+- [Tailwindcss](https://tailwindcss.com/)
+- [Ethersjs](https://docs.ethers.org/v6/)
+- [Viem](https://viem.sh/)
+- [Wagmi](https://wagmi.sh/)
 
 ## Getting Started
-First, run the development server:
+
+> **Pre-requisites:**
+>
+> - Setup Node.js v20+ (recommended via [nvm](https://github.com/nvm-sh/nvm) with `nvm install 20`)
+> - Install [yarn](https://yarnpkg.com/getting-started/install) (recommended via [Node.js Corepack](https://nodejs.org/api/corepack.html))
+> - Clone this repository
 
 ```bash
-npm run dev:local
-npm run dev:development
-npm run dev:test
-npm run dev:local
+# Install dependencies
+yarn install
 
+# Start development server
+yarn run dev:local
+# Open [http://localhost:3000](http://localhost:3000) with your browser to see the dApp running.
+
+# Build production frontend & start server
+yarn run build
+yarn run start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Contributors
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+<!-- markdownlint-disable -->
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+<table>
+  <tbody>
+    <tr>
+      <td align="center" valign="top" width="20%"><a href="https://github.com/talwaserman"><img src="https://avatars.githubusercontent.com/talwaserman?v=3?s=100" width="100px;" alt="Tal Waserman"/><br /><sub><b>Tal Waserman</b></sub></a></td>
+      <td align="center" valign="top" width="20%"><a href="http://wisdom-umanah.super.site/"><img src="https://media.licdn.com/dms/image/D4D03AQHYoWLAkfiVEg/profile-displayphoto-shrink_200_200/0/1705060796514?e=1722470400&v=beta&t=mlRRiJCMbpF3gjz3eiFMLaVWfjFJ6MYoqVIBL1Dt_9A" width="100px;" alt="Wisdom Umanah"/><br /><sub><b>Wisdom Umanah</b></sub></a></td>
+      <td align="center" valign="top" width="20%"><a href="https://github.com/maxipaz"><img src="https://avatars.githubusercontent.com/maxipaz?v=3?s=100" width="100px;" alt="Maxi Paz"/><br /><sub><b>Maxi Paz</b></sub></a></td>
+      <td align="center" valign="top" width="20%"><a href="https://github.com/diegosano"><img src="https://avatars.githubusercontent.com/diegosano?v=3?s=100" width="100px;" alt="Diego Sano"/><br /><sub><b>Diego Sano</b></sub></a></td>
+      <td align="center" valign="top" width="20%"><a href="https://github.com/SimonAyo1"><img src="https://avatars.githubusercontent.com/SimonAyo1?v=3?s=100" width="100px;" alt="Simon Ayo"/><br /><sub><b>Simon Ayo</b></sub></a></td>
+    </tr>
+  </tbody>
+</table>
 
-## Learn More
+<!-- markdownlint-restore -->
 
-To learn more about Next.js, take a look at the following resources:
+## License
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Distributed under the MIT License. See [MIT License](https://github.com/cross-chain-market/chainlink-hackathon2024-web/blob/main/LICENSE) for more information.
