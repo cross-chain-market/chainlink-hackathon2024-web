@@ -29,13 +29,12 @@ yarn install
 
 # Start development server
 yarn run dev:local
+# Open [http://localhost:3000](http://localhost:3000) with your browser to see the dApp running.
 
 # Build production frontend & start server
 yarn run build
 yarn run start
 ```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the dApp.
 
 ## Contributors
 
@@ -45,7 +44,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
   <tbody>
     <tr>
       <td align="center" valign="top" width="20%"><a href="https://github.com/talwaserman"><img src="https://avatars.githubusercontent.com/talwaserman?v=3?s=100" width="100px;" alt="Tal Waserman"/><br /><sub><b>Tal Waserman</b></sub></a></td>
-      <td align="center" valign="top" width="20%"><a href="https://github.com/talwaserman"><img src="https://avatars.githubusercontent.com/talwaserman?v=3?s=100" width="100px;" alt="Wisdom Umanah"/><br /><sub><b>Wisdom Umanah</b></sub></a></td>
+      <td align="center" valign="top" width="20%"><a href="http://wisdom-umanah.super.site/"><img src="https://media.licdn.com/dms/image/D4D03AQHYoWLAkfiVEg/profile-displayphoto-shrink_200_200/0/1705060796514?e=1722470400&v=beta&t=mlRRiJCMbpF3gjz3eiFMLaVWfjFJ6MYoqVIBL1Dt_9A" width="100px;" alt="Wisdom Umanah"/><br /><sub><b>Wisdom Umanah</b></sub></a></td>
       <td align="center" valign="top" width="20%"><a href="https://github.com/maxipaz"><img src="https://avatars.githubusercontent.com/maxipaz?v=3?s=100" width="100px;" alt="Maxi Paz"/><br /><sub><b>Maxi Paz</b></sub></a></td>
       <td align="center" valign="top" width="20%"><a href="https://github.com/diegosano"><img src="https://avatars.githubusercontent.com/diegosano?v=3?s=100" width="100px;" alt="Diego Sano"/><br /><sub><b>Diego Sano</b></sub></a></td>
       <td align="center" valign="top" width="20%"><a href="https://github.com/SimonAyo1"><img src="https://avatars.githubusercontent.com/SimonAyo1?v=3?s=100" width="100px;" alt="Simon Ayo"/><br /><sub><b>Simon Ayo</b></sub></a></td>
