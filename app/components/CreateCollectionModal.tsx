@@ -12,7 +12,7 @@ const createCollectionSchema = z.object({
     .string()
     .min(2, { message: "Description should have at least 2 letters" })
     .max(50, { message: "Description should have less then 20 letters" }),
-  base_image_path: z
+    base_hash: z
     .string()
     .min(2, { message: "Name should have at least 2 letters" }),
   network_id: z
@@ -36,7 +36,7 @@ export function CreateCollectionModal({
     initialValues: {
       name: "",
       description: "",
-      base_image_path: "",
+      base_hash: "",
       network_id: "",
       chain_id: "",
     },
@@ -107,8 +107,8 @@ export function CreateCollectionModal({
         <TextInput
           label="Base image path"
           placeholder="Base path to IPFS provider"
-          key={form.key("base_image_path")}
-          {...form.getInputProps("base_image_path")}
+          key={form.key("base_hash")}
+          {...form.getInputProps("base_hash")}
         />
 
         <Button type="submit">Create</Button>

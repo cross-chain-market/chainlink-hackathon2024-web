@@ -1,46 +1,32 @@
 "use client";
 import { getChainId } from "@wagmi/core";
 import { Address, parseUnits } from "viem";
-import { chainInfo } from "../../../utils/helpers";
-import { getAVAXUSD } from "../priceFeedContract";
-
-require("dotenv").config();
-interface ContractAddresses {
-  [key: string]: string;
-}
+import { priceConversionAggregator, getMarketplaceContractAddress } from "../../../utils/helpers";
 
 import { writeContract } from '@wagmi/core'
 import { config } from '../../../../config'
 const contractJSON = require("./abi.json");
 
-export async function buyListing(collectionAddress: string, listingId: number, amount: number, priceUSD: number) {
+export async function buyListingFromBlockchain(userAccount: string, collectionAddress: string, listingId: number, amount: number, priceUSD: number, destinationChainId: number) {
   const chainId = getChainId(config);
-    const chainData = chainInfo(chainId);
 
-  const contractAddress: ContractAddresses = {
-    Localhost_avalanche_fuji:
-      process.env.marketplace_avalanche_fuji_contract_address || "",
-    Development_avalanche_fuji:
-      process.env.marketplace_avalanche_fuji_contract_address || "",
-    Preview_avalanche_fuji:
-      process.env.marketplace_avalanche_fuji_contract_address || "",
-    Production: "",
-  };
   try {
-    const priceConversion = await getAVAXUSD();
+    const address = getMarketplaceContractAddress(chainId) as Address;
+    debugger;
+    const priceConversion = await priceConversionAggregator(chainId);
     if (!priceConversion) {
       alert('issue with getting price, please contact support');
       return;
     }
-    const address = contractAddress[
-      `${process.env.WORKING_ENV}_${chainData.chain}` || "test"
-    ] as Address;
+
     const value = parseUnits(String(priceUSD / priceConversion), 18);
     await writeContract(config, {
       abi: contractJSON.abi,
       address,
-      functionName: 'buyListing',
+      functionName: 'CCIPBuyListing',
       args: [
+        userAccount,
+        destinationChainId,
         collectionAddress,
         listingId,
         amount
@@ -50,5 +36,6 @@ export async function buyListing(collectionAddress: string, listingId: number, a
   } catch (err) {
     console.log(err);
     alert('buy transaction can not be completed, please contact support');
+    throw err;
   }
 }
