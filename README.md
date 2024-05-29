@@ -1,3 +1,9 @@
+<!-- markdownlint-disable -->
+
+![Merado logo](https://github.com/cross-chain-market/chainlink-hackathon2024-web/blob/main/public/logo.svg?raw=true)
+
+<!-- markdownlint-restore -->
+
 # Merado - Front End
 
 > Cross-chain marketplace of Real World Assets.
