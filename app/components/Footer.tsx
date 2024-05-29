@@ -1,6 +1,6 @@
 "use client";
 
-import { Title, Button } from "@mantine/core";
+import { Button } from "@mantine/core";
 import { IconChevronRight } from "@tabler/icons-react";
 import { useWeb3Modal } from "@web3modal/wagmi/react";
 import Image from "next/image";
@@ -17,15 +17,11 @@ export default function Footer() {
         <div className="flex gap-8 items-center">
           <Link className="flex gap-2 items-center" href="/">
             <Image
-              src="https://cdn-icons-png.freepik.com/512/2152/2152349.png"
-              width={50}
-              height={50}
-              alt="cross chain marketplace logo"
+              src="/logo-light.svg"
+              width={160}
+              height={90}
+              alt="Merado logo"
             />
-
-            <Title fz="lg" className="text-white">
-              Cross-Chain Marketplace
-            </Title>
           </Link>
 
           <Link href="" className="text-white font-medium">
