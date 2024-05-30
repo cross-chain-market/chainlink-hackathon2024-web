@@ -166,7 +166,7 @@ export default function Page({
         baseHash={collection.base_hash}
         onClose={close}
         opened={opened}
-        collectionId={collection.collectionId}
+        collectionId={collection.id}
       />
       <ApproveCollectionModal
         collectionId={collection.collectionId}
