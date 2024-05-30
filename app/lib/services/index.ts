@@ -1,31 +1,30 @@
 import axios from "axios";
 import { LocalCollection, Item } from "@/app/types/marketplace";
-import { useLocalCollections } from "@/app/hooks/useLocalCollections";
 
 import { deployCollection } from '../client-services/collectionFactoryContract';
 
-const API_URL = "http://localhost:8081/v1/users";
+const API_URL = "http://localhost:8081/v1";
 
 export async function createCollection(collection: LocalCollection, userAccount: string): Promise<LocalCollection | null> {
   try {
     const clonedData = JSON.parse(JSON.stringify(collection));
     clonedData.chain_id = Number(collection.chain_id);
     clonedData.items.forEach((item: any) => {
-      item.image_id = String(item.image_id);
+      item.image_id = item.image_id;
       let att: any = {};
       item.attributes.forEach((attribute: any) => {
         att[attribute.key] = attribute.value;
       });
       item.attributes = att;
     });
-    const response = await axios.post(`${API_URL}/${userAccount}/collections`, clonedData);
+    const response = await axios.post(`${API_URL}/users/${userAccount}/collections`, clonedData);
 
     // deploy to blockchain
     await deployCollection(
       collection.name,
       collection.items.map((item:any) => item.image_id),
       collection.items.map((item:any) => item.listed_amount),
-      collection.base_image_path
+      collection.base_hash
     );
 
     return response.data;
@@ -47,7 +46,7 @@ export async function getAllCollectionsByAccountAndCollectionId(userAccount: str
   return response.data;
 }
 
-export async function getListings(): Promise<Item[]> {
+export async function getAllListing(): Promise<Item[]> {
   const response = await axios.get(`${API_URL}/listings`);
   return response.data;
 }

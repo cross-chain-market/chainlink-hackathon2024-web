@@ -1,11 +1,7 @@
 "use client";
 import { getChainId } from "@wagmi/core";
 import { Address } from "viem";
-import { chainInfo } from "../../../utils/helpers";
-require("dotenv").config();
-interface ContractAddresses {
-  [key: string]: string;
-}
+import { getPriceFeedContractAddress } from "../../../utils/helpers";
 
 import { readContract } from "@wagmi/core";
 import { config } from "../../../../config";
@@ -13,22 +9,9 @@ const contractJSON = require("./abi.json");
 
 export async function getAVAXUSD() {
   const chainId = getChainId(config);
-  const chainData = chainInfo(chainId);
-
-  const contractAddress: ContractAddresses = {
-    Localhost_avalanche_fuji:
-      process.env.priceFeed_avalanche_fuji_contract_address || "",
-    Development_avalanche_fuji:
-      process.env.priceFeed_avalanche_fuji_contract_address || "",
-    Preview_avalanche_fuji:
-      process.env.priceFeed_avalanche_fuji_contract_address || "",
-    Production: "",
-  };
 
   try {
-    const address = contractAddress[
-      `${process.env.WORKING_ENV}_${chainData.chain}` || "test" ] as Address;
-
+    const address = getPriceFeedContractAddress(chainId) as Address;
     const decimals: number = Number(await readContract(config, {
       abi: contractJSON.abi,
       address,

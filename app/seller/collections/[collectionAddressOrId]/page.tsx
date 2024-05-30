@@ -65,8 +65,8 @@ export default function Page({
     <>
     <div style={{ width: '100%', height: '230px', position: 'relative', paddingBottom: '2' }}>
           <Image
-            src={`https://ipfs.io/ipfs/${collection.base_image_path}/collection_banner.png`}
-            alt=""
+            src={`https://ipfs.io/ipfs/${collection.base_hash}/collection_banner.png`}
+            alt="banner image"
             layout="fill"
             quality={100}
             className="object-cover"
@@ -163,13 +163,13 @@ export default function Page({
       </section> */}
 
       <CreateItemModal
-        baseHash={collection.base_image_path}
+        baseHash={collection.base_hash}
         onClose={close}
         opened={opened}
-        collectionId={collection.id}
+        collectionId={collection.collectionId}
       />
       <ApproveCollectionModal
-        collectionId={collection.id}
+        collectionId={collection.collectionId}
         collectionAddress={collection.address}
         opened={ApproveDialogOpened}
         onClose={closeApprove}

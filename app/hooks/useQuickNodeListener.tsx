@@ -14,6 +14,10 @@ const avalanacheFujiCore = new Core({
   endpointUrl: "https://patient-late-frost.avalanche-testnet.quiknode.pro/af4ff48c50b08a7fd7f9d595b6ea6c677ae1394b/ext/bc/C/rpc/"
 });
 
+// const polygonAmoyCore = new Core({
+//   endpointUrl: 'https://green-lively-isle.matic-amoy.quiknode.pro/e4f9eb77b0f4d85f8bd86b1f9a13e0f7a2d3e16e/',
+// })
+
 export function useQuickNodeListener() {
     const marketInterface = new ethers.Interface(marketJSON.abi);
     const collectionFactoryInterface = new ethers.Interface(collectionFactoryJSON.abi);
@@ -24,13 +28,27 @@ export function useQuickNodeListener() {
     useEffect(() => {
         let listeners: any = [];
         async function startListeners() {
+            // fuji marketplace
             listeners.push(await avalanacheFujiCore.client.watchEvent({
-                // fuji marketplace
                 address: '0xb65eFBCb305f8c5Fb13ec3A7c2b1658046E8290d',
                 onLogs: (logs) => logs.forEach(log => {
                   try {
                     const decodedLog = marketInterface.parseLog(log);
-                    console.log('Decoded log:', decodedLog);
+                    if(decodedLog) {
+                      if (decodedLog.name === 'ListingBoughtLog') {
+                        notifications.show({
+                          autoClose: false,
+                          title: `Buying of product with id ${decodedLog?.args[1]} was successful`,
+                          message: `🎁 ${decodedLog?.args[2]} products of id ${decodedLog?.args[1]} were bought by ${decodedLog.args[3]} from collection number ${decodedLog.args[0]}`,
+                        });
+                      } else {
+                        notifications.show({
+                          autoClose: false,
+                          title: decodedLog.name,
+                          message: `${decodedLog.name} was emited`,
+                        });
+                      }
+                    }
                   } catch (error) {
                     console.error('Error decoding log:', error);
                   }

@@ -1,3 +1,8 @@
+require("dotenv").config();
+
+import { getAVAXUSD } from "../lib/client-services/priceFeedAvalancheContract";
+import { getMATICUSD } from "../lib/client-services/priceFeedPolygonContract";
+
 type ChainInfo = {
   network: string;
   chain: string;
@@ -69,3 +74,60 @@ export const chainOptions = [
   { label: "Optimism Sepolia", value: "11155420" },
   { label: "Sepolia", value: "11155111" }
 ];
+
+
+export const priceConversionAggregator = async (chainId: number) => {
+  switch (chainId) {
+    case 43113:
+      return await getAVAXUSD();
+    case 80002:
+      return await getMATICUSD();
+    default:
+      alert('this chain is not supported');
+  } 
+}
+
+export const getFactoryContractAddress = (chainId: number) => {
+  switch (chainId) {
+    case 43113:
+      return process.env["collectionsFactory_43113"] || "0x0";
+    case 80002:
+      return process.env["collectionsFactory_80002"] || "0x0";
+    default:
+      return "0x0";
+  }
+};
+
+
+export const getMarketplaceContractAddress = (chainId: number) => {
+  switch (chainId) {
+    case 43113:
+      return process.env["marketplace_43113"] || "0x0";
+    case 80002:
+      return process.env["marketplace_80002"] || "0x0";
+    default:
+      return "0x0";
+  }
+};
+
+export const getPriceFeedContractAddress = (chainId: number) => {
+  switch (chainId) {
+    case 43113:
+      return process.env["priceFeed_43113"] || "0x0";
+    case 80002:
+      return process.env["priceFeed_80002"] || "0x0";
+    default:
+      return "0x0";
+  }
+};
+
+export const getMarketplaceAddress = (chainId: string): string => {
+  switch (chainId) {
+    case 43113:
+      return '0xb65eFBCb305f8c5Fb13ec3A7c2b1658046E8290d';
+    case 80002:
+      return '0x1866380708C7EeC51C8557E40ba98ECe37f61dF0';
+    default:
+      return "0x0";
+  }
+}
