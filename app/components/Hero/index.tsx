@@ -14,7 +14,7 @@ export default function Hero() {
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col lg:flex-row items-center lg:justify-between">
             <div className="lg:w-7/12 lg:pr-6">
-              <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-black">
+              <h1 className="text-[40px] font-bold tracking-tight text-black leading-5">
                 Crypto products,
                 <br /> Your Gateway to the <br />
                 <span className="text-white bg-[#5B4CF0]">
