@@ -120,3 +120,14 @@ export const getPriceFeedContractAddress = (chainId: number) => {
       return "0x0";
   }
 };
+
+export const getMarketplaceAddress = (chainId: string): string => {
+  switch (chainId) {
+    case 43113:
+      return '0xb65eFBCb305f8c5Fb13ec3A7c2b1658046E8290d';
+    case 80002:
+      return '0x1866380708C7EeC51C8557E40ba98ECe37f61dF0';
+    default:
+      return "0x0";
+  }
+}

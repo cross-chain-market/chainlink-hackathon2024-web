@@ -22,6 +22,7 @@ export default function Home() {
 
   const { address, chain } = useAccount();
   const PLATFORM_FEE = 2;
+  const SHIPPING_FEE = 0.0001;
 
   useEffect(() => {
     console.log(chain, "chain");
@@ -30,7 +31,7 @@ export default function Home() {
       console.log(price, "price");
       const listings: Item[] = await getAllListing();
       listings?.forEach((listing: any) => {
-        (listing.shipping = 0.2), (listing.platform_fee = PLATFORM_FEE);
+        (listing.shipping = SHIPPING_FEE), (listing.platform_fee = PLATFORM_FEE);
       });
       setConvertedPrice(price || 0);
       setProducts(listings || []);
@@ -286,7 +287,7 @@ export default function Home() {
                             <p className={classes.det}>Total price:</p>
                           </div>
                           <div>
-                            <p className={classes.det_1}>${amount}</p>
+                            <p className={classes.det_1}>${amount.toFixed(6)}</p>
                           </div>
                         </div>
                         <div className={`${classes.meta_row} mt-3`}>
@@ -295,7 +296,7 @@ export default function Home() {
                           </div>
                           <div>
                             <p className={classes.det_1}>
-                              {(amount / convertedPrice).toFixed(2)} {chain.nativeCurrency.symbol}
+                              {(amount / convertedPrice).toFixed(6)} {chain.nativeCurrency.symbol}
                             </p>
                           </div>
                         </div>
@@ -316,7 +317,7 @@ export default function Home() {
                         <div className="flex flex justify-between items-center">
                           <div>
                             <div>
-                              <p className={classes.ch_ti}>Origin:</p>
+                              <p className={classes.ch_ti}>Product:</p>
                             </div>
                             <div>
                               {selectedProduct.network_id == "polygon" && (
@@ -340,20 +341,20 @@ export default function Home() {
                           </div>
                           <div>
                             <div>
-                              <p className={classes.ch_ti}>Destination:</p>
+                              <p className={classes.ch_ti}>Wallet:</p>
                             </div>
                             <div>
                               {chain?.id == 80002 && (
-                                <img src="./assets/Amoy.svg" alt="" />
+                                <img src="./assets/polygon.svg" alt="" />
                               )}
                               {chain?.id == 11155420 && (
-                                <img src="./assets/Optimism.svg" alt="" />
+                                <img src="./assets/optimism.svg" alt="" />
                               )}
                               {chain?.id == 421614 && (
-                                <img src="./assets/Abitrum.svg" alt="" />
+                                <img src="./assets/abitrum.svg" alt="" />
                               )}
                               {chain?.id == 43113 && (
-                                <img src="./assets/Avalanche.svg" alt="" />
+                                <img src="./assets/avalanche.svg" alt="" />
                               )}
                             </div>
                           </div>

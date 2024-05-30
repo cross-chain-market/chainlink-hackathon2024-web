@@ -7,11 +7,12 @@ import {
 } from "@mantine/core";
 import { useState } from 'react';
 import { z } from "zod";
+import { useAccount } from "wagmi";
 import { useForm } from "@mantine/form";
 import { allowMarketplaceToSellCollection } from "@/app/lib/client-services/collectionContract";
 import { useLocalCollections } from "@/app/hooks/useLocalCollections";
 import { zodResolver } from "mantine-form-zod-resolver";
-import { networkOptions, chainOptions} from "../utils/helpers";
+import { networkOptions, chainOptions, getMarketplaceAddress} from "../utils/helpers";
 
 const createItemSchema = z.object({
   network_id: z
@@ -45,24 +46,11 @@ export function ApproveCollectionModal({
   });
   const { updateCollectionSaleApproval } = useLocalCollections();
   const [isSubmitDisabled, setSubmitDisabled] = useState(false);
-
-  const getMarketplaceAddress = (selectedChainId: string): string => {
-    //avalanche Fuji
-    if(selectedChainId === '43113') {
-      return '0xb65eFBCb305f8c5Fb13ec3A7c2b1658046E8290d';
-    }
-
-    // polygon Amoy
-    if (selectedChainId === '43113') {
-      return '0x1866380708C7EeC51C8557E40ba98ECe37f61dF0';
-    }
-
-    return '0x0';
-  }
+  const { chain } = useAccount();
 
   const handleSubmit = async (values: typeof form.values) => {
     setSubmitDisabled(true);
-    const marketPlaceAddress = getMarketplaceAddress(values.chain_id);
+    const marketPlaceAddress = getMarketplaceAddress(chain?.id);
     if (collectionAddress && collectionId) {
       try {
         await allowMarketplaceToSellCollection(collectionAddress, marketPlaceAddress, !isApproved);
@@ -98,32 +86,17 @@ export function ApproveCollectionModal({
       size="md"
       centered
     >
-      {!isApproved && <Text>By approving this transaction you will allow the marketplace to sell collection products for you</Text>}
-      {isApproved && <Text>By Revoking the approval for the marketplace to sell this collection, you will prevent buyers from buying products of this collection</Text>}
-      <Space h="md" />
       <form
         onSubmit={form.onSubmit(handleSubmit, (errors) => console.log(errors))}
         className="flex flex-col gap-4"
       >
-        <Select
-          label="Network"
-          placeholder="Pick value"
-          data={networkOptions}
-          clearable
-          searchable
-          onSearchChange={setChainValue}
-          key={form.key("network_id")}
-          {...form.getInputProps("network_id")}
-        />
+      {!isApproved && <Text>
+        By approving this transaction you will allow marketplace on <span className="font-semibold">{chain?.name}</span> to sell collection products for collection <span className="font-semibold">{collectionAddress}</span>
 
-        <Select
-          label="Chain"
-          placeholder="Pick value"
-          data={chainOptions}
-          readOnly
-          key={form.key("chain_id")}
-          {...form.getInputProps("chain_id")}
-        />
+      </Text>}
+      {isApproved && <Text>By Revoking the approval for the marketplace to sell this collection, you will prevent buyers from buying products of this collection</Text>}
+      <Space h="md" />
+      
         <Button type="submit" disabled={isSubmitDisabled}>{isApproved ? 'Revoke' : 'Approve'}</Button>
       </form>
     </Modal>
